@@ -5,7 +5,7 @@ class Camera(models.Model):
     USERNAME="ADMIN"
     PASSWORD="ADMIN"
     CAMERA_ID="453"
-    camera_id=models.CharField(max_length=20,null=True,blank=True)
+    camera_id=models.CharField(max_length=20,default=CAMERA_ID,null=True,blank=True)
     ip_address=models.CharField(max_length=13,default=IP_ADDRESS,null=True,blank=True)
     username=models.CharField(max_length=25,default=USERNAME,null=True,blank=True)
     password=models.CharField(max_length=15,default=PASSWORD,null=True,blank=True)
@@ -51,15 +51,13 @@ class Event(models.Model):
         (RESTRICTIONS,"Restrictions"),
         (SAFETY,"Safety")
     ]
-
-
-
-    event_name=models.CharField(max_length=2,choices=EVENT_CHOICES,null=True,blank=True)
-    event_category=models.CharField(max_length=2,choices=EVENT_CATEGORY_CHOICES,null=True,blank=True)
+    ou_id=models.ForeignKey(Camera,on_delete=models.CASCADE,related_name="events",null=True,blank=True)
+    event_name=models.IntegerField(max_length=2,choices=EVENT_CHOICES,null=True,blank=True)
+    event_category=models.IntegerField(max_length=2,choices=EVENT_CATEGORY_CHOICES,null=True,blank=True)
     model_name=models.CharField(max_length=20,null=True,blank=True)
     model_version=models.CharField(max_length=10,null=True,blank=True)
     confidence_score=models.BooleanField(null=True,blank=True)
-    event_coordinates=models.ForeignKey(Event_Coordinates,on_delete=models.CASCADE,null=True,blank=True)
+    event_coordinates=models.ForeignKey(Event_Coordinates,on_delete=models.CASCADE,related_name="coordinates",null=True,blank=True)
     event_state=models.BooleanField(null=True,blank=True)
     timestamp=models.DateTimeField(auto_now_add=True)
 
